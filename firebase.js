@@ -44,9 +44,9 @@ gate.id = 'sbAuthGate';
 gate.innerHTML = `
  <div class="auth-card">
   <h2>SMART TAILORS</h2>
-  <div class="auth-sub">আপনার ব্যবসার অ্যাকাউন্টে প্রবেশ করুন</div>
+  <div class="auth-sub">মোবাইল নম্বর ও পাসওয়ার্ড দিয়ে প্রবেশ করুন</div>
   <form id="sbLoginForm">
-   <label>ইমেইল</label><input id="sbLoginEmail" type="email" autocomplete="username" required placeholder="আপনার ইমেইল">
+   <label>মোবাইল নম্বর</label><input id="sbLoginPhone" type="tel" autocomplete="username" required placeholder="01XXXXXXXXX (পুরোনো ইমেইলও চলবে)">
    <label>পাসওয়ার্ড</label><input id="sbLoginPassword" type="password" autocomplete="current-password" required minlength="6" placeholder="কমপক্ষে ৬ অক্ষর">
    <button type="submit">লগইন</button>
    <button type="button" class="auth-switch" id="sbShowRegister">নতুন অ্যাকাউন্ট খুলুন</button>
@@ -54,14 +54,14 @@ gate.innerHTML = `
   <form id="sbRegisterForm" class="hidden">
    <label>দোকানের নাম</label><input id="sbShopName" required placeholder="দোকানের নাম">
    <label>মালিকের নাম</label><input id="sbOwnerName" required placeholder="আপনার নাম">
-   <label>মোবাইল নম্বর</label><input id="sbPhone" type="tel" required placeholder="মোবাইল নম্বর">
-   <label>ইমেইল</label><input id="sbRegisterEmail" type="email" autocomplete="username" required placeholder="আপনার ইমেইল">
+   <label>মোবাইল নম্বর</label><input id="sbPhone" type="tel" required placeholder="01XXXXXXXXX">
+   <label>দোকানের ঠিকানা</label><input id="sbAddress" type="text" required placeholder="দোকানের পূর্ণ ঠিকানা">
    <label>পাসওয়ার্ড</label><input id="sbRegisterPassword" type="password" autocomplete="new-password" minlength="6" required placeholder="কমপক্ষে ৬ অক্ষর">
    <button type="submit">রেজিস্ট্রেশন</button>
    <button type="button" class="auth-switch" id="sbShowLogin">আগে অ্যাকাউন্ট আছে? লগইন</button>
   </form>
   <div class="auth-error" id="sbAuthError" role="alert"></div>
-  <div class="auth-note">আপনার অ্যাকাউন্ট নিরাপদ রাখতে পাসওয়ার্ড কারও সঙ্গে শেয়ার করবেন না।</div>
+  <div class="auth-note">OTP ছাড়াই মোবাইল নম্বর ও পাসওয়ার্ড দিয়ে অ্যাকাউন্ট ব্যবহার করুন। পাসওয়ার্ড কারও সঙ্গে শেয়ার করবেন না।</div>
  </div>`;
 document.body.appendChild(gate);
 
@@ -72,8 +72,8 @@ function friendlyError(error){
   const code = error?.code || 'unknown';
   const message = error?.message || 'অজানা সমস্যা';
   const map = {
-    'auth/email-already-in-use':'এই ইমেইল দিয়ে আগে থেকেই অ্যাকাউন্ট খোলা আছে।',
-    'auth/invalid-email':'সঠিক ইমেইল ঠিকানা লিখুন।',
+    'auth/email-already-in-use':'এই মোবাইল নম্বর দিয়ে আগে থেকেই অ্যাকাউন্ট খোলা আছে।',
+    'auth/invalid-email':'মোবাইল নম্বর সঠিকভাবে লিখুন।',
     'auth/weak-password':'পাসওয়ার্ড কমপক্ষে ৬ অক্ষরের হতে হবে।',
     'auth/invalid-credential':'ইমেইল অথবা পাসওয়ার্ড সঠিক নয়।',
     'auth/user-not-found':'এই ইমেইলে কোনো অ্যাকাউন্ট পাওয়া যায়নি।',
@@ -88,12 +88,26 @@ function friendlyError(error){
 $('sbShowRegister').onclick=()=>{ $('sbLoginForm').classList.add('hidden'); $('sbRegisterForm').classList.remove('hidden'); showError(); };
 $('sbShowLogin').onclick=()=>{ $('sbRegisterForm').classList.add('hidden'); $('sbLoginForm').classList.remove('hidden'); showError(); };
 
+// OTP is not used: map each normalized phone number to a private Firebase Auth email alias.
+function normalizeBangladeshPhone(value){
+  let digits=String(value||'').replace(/\D/g,'');
+  if(digits.startsWith('00880')) digits=digits.slice(2);
+  if(digits.startsWith('8801')&&digits.length===13)return digits;
+  if(digits.startsWith('01')&&digits.length===11)return '88'+digits;
+  if(digits.startsWith('1')&&digits.length===10)return '880'+digits;
+  throw new Error('বাংলাদেশের সঠিক ১১ সংখ্যার মোবাইল নম্বর লিখুন।');
+}
+function phoneAuthEmail(value){return 'phone.'+normalizeBangladeshPhone(value)+'@smarttailors.app';}
+function loginIdentifier(value){const v=String(value||'').trim();return v.includes('@')?v:phoneAuthEmail(v);}
+
 $('sbLoginForm').addEventListener('submit', async e=>{
   e.preventDefault(); showError();
   const button=$('sbLoginForm').querySelector('button[type="submit"]');
   button.disabled=true; button.textContent='লগইন হচ্ছে...';
-  try { await signInWithEmailAndPassword(auth,$('sbLoginEmail').value.trim(),$('sbLoginPassword').value); }
-  catch(err){showError(friendlyError(err));}
+  try {
+    const identifier=loginIdentifier($('sbLoginPhone').value);
+    await signInWithEmailAndPassword(auth,identifier,$('sbLoginPassword').value);
+  } catch(err){showError(err.message&&!err.code?err.message:friendlyError(err));}
   finally {button.disabled=false;button.textContent='লগইন';}
 });
 
@@ -105,12 +119,14 @@ $('sbRegisterForm').addEventListener('submit', async e=>{
     const shopName=$('sbShopName').value.trim();
     const owner=$('sbOwnerName').value.trim();
     const phone=$('sbPhone').value.trim();
-    const credential=await createUserWithEmailAndPassword(auth,$('sbRegisterEmail').value.trim(),$('sbRegisterPassword').value);
+    const address=$('sbAddress').value.trim();
+    const authEmail=phoneAuthEmail(phone);
+    const credential=await createUserWithEmailAndPassword(auth,authEmail,$('sbRegisterPassword').value);
     await updateProfile(credential.user,{displayName:owner});
     const dataRef=doc(db,'users',credential.user.uid,'businessData','main');
     await setDoc(dataRef,{
-      profile:{shopName,owner,phone},
-      data:{sales:[],orders:[],notes:[],expenses:[],settings:{shopName,owner,phone,address:''}},
+      profile:{shopName,owner,phone,address},
+      data:{sales:[],orders:[],notes:[],expenses:[],settings:{shopName,owner,phone,address}},
       createdAt:serverTimestamp(),updatedAt:serverTimestamp()
     });
   } catch(err){showError(friendlyError(err));}
@@ -137,6 +153,12 @@ function startCloud(user){
       }
       const remote=snapshot.data();
       const data=remote.data || emptyData();
+      const profile=remote.profile || {};
+      data.settings=data.settings || {};
+      data.settings.shopName=data.settings.shopName || profile.shopName || '';
+      data.settings.owner=data.settings.owner || profile.owner || user.displayName || '';
+      data.settings.phone=data.settings.phone || profile.phone || '';
+      data.settings.address=data.settings.address || profile.address || '';
       lastRemoteJson=JSON.stringify(data);
       if(typeof window.SBApplyCloudData==='function') window.SBApplyCloudData(data);
       cloudReady=true;
@@ -187,3 +209,5 @@ onAuthStateChanged(auth,user=>{
 });
 
 window.SBAuth={logout:()=>signOut(auth),auth};
+const logoutButton=document.getElementById('sbLogoutBtn');
+if(logoutButton)logoutButton.addEventListener('click',async()=>{if(confirm('আপনি কি লগআউট করতে চান?'))await signOut(auth);});

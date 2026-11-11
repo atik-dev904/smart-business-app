@@ -13,3 +13,6 @@ Each account can read/write only its own user document tree under the supplied r
 IMPORTANT: This build intentionally does not import old browser localStorage test data into a new cloud account. Existing backups should be imported after login using Settings > Data Backup > Restore. Keep a backup JSON before replacing the live app.
 
 The app retains the existing fabric sales, multi-item tailoring orders and measurements, customer payments/due, expenses, payment history, customer notes, settings, backup/restore, and calculator. Calculator styling is refreshed.
+
+
+আপডেট সংস্করণ: Registration/Login মোবাইল নম্বর + পাসওয়ার্ডে (OTP ছাড়া)। Registration-এ দোকানের ঠিকানা দিতে হবে। Header-এ দোকানের নাম, মালিকের নাম, ঠিকানা ও নিবন্ধিত মোবাইল নম্বর দেখাবে। পুরোনো ইমেইল অ্যাকাউন্টে লগইন করতে Login ঘরে আগের ইমেইল দেওয়া যাবে।

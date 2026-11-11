@@ -61,6 +61,10 @@ font-size:12px;
 opacity:.85;
 margin-top:4px;
 }
+#headerShopName{font-size:22px;line-height:1.3;overflow-wrap:anywhere}
+#headerOwner,#headerAddress,#headerPhone{font-size:12px;line-height:1.5;overflow-wrap:anywhere}
+#sbLogoutBtn{font-size:11px;padding:6px 10px;}
+
 
 .header-badge{
 background:rgba(255,255,255,.15);
@@ -578,10 +582,12 @@ font-size:17px;
 <header class="app-header">
 <div class="header-top">
 <div>
-<div class="brand">SMART TAILORS</div>
-<div class="brand-sub">Men's Fabrics & Tailors Management System</div>
+<div class="brand" id="headerShopName">SMART TAILORS</div>
+<div class="brand-sub" id="headerOwner">মালিকের নাম</div>
+<div class="brand-sub" id="headerAddress" style="margin-top:3px;">দোকানের ঠিকানা</div>
+<div class="brand-sub" id="headerPhone" style="margin-top:2px;">মোবাইল নম্বর</div>
 </div>
-<div class="header-badge">Version 3.2</div>
+<div style="display:flex;flex-direction:column;align-items:flex-end;gap:7px;"><div class="header-badge">Version 3.3</div><button type="button" id="sbLogoutBtn" class="header-badge" style="border:0;color:white;cursor:pointer;">লগআউট</button></div>
 </div>
 </header>
 
@@ -2661,6 +2667,19 @@ document.getElementById("settingOwner").value=settings.owner||"";
 document.getElementById("settingPhone").value=settings.phone||"";
 
 document.getElementById("settingAddress").value=settings.address||"";
+
+const shopName=settings.shopName||"SMART TAILORS";
+const owner=settings.owner||"মালিকের নাম";
+const phone=settings.phone||(window.SBCurrentUser&&window.SBCurrentUser.phoneNumber)||"মোবাইল নম্বর";
+const address=settings.address||"দোকানের ঠিকানা";
+const shopEl=document.getElementById("headerShopName");
+const ownerEl=document.getElementById("headerOwner");
+const phoneEl=document.getElementById("headerPhone");
+const addressEl=document.getElementById("headerAddress");
+if(shopEl)shopEl.textContent=shopName;
+if(ownerEl)ownerEl.textContent="মালিক: "+owner;
+if(phoneEl)phoneEl.textContent="📞 "+phone;
+if(addressEl)addressEl.textContent="📍 "+address;
 
 }
 
