@@ -1,0 +1,2422 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SMART BUSINESS</title>
+
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header class="app-header">
+<div class="header-top">
+<div>
+<div class="brand">SMART BUSINESS</div>
+<div class="brand-sub">Men's Fabrics & Tailors Management System</div>
+</div>
+<div class="header-badge">Version 3.2</div>
+</div>
+</header>
+
+<!-- DASHBOARD PAGE -->
+<section class="page active" id="dashboardPage">
+
+<div class="page-title">📊 ড্যাশবোর্ড</div>
+
+<div class="summary-grid">
+
+<div class="summary-card">
+<div class="summary-label">মোট কাপড় বিক্রি</div>
+<div class="summary-value" id="dashSales">৳ ০</div>
+</div>
+
+<div class="summary-card blue">
+<div class="summary-label">চলমান অর্ডার</div>
+<div class="summary-value" id="dashOrders">০</div>
+</div>
+
+<div class="summary-card green">
+<div class="summary-label">মোট জমা</div>
+<div class="summary-value" id="dashReceived">৳ ০</div>
+</div>
+
+<div class="summary-card orange">
+<div class="summary-label">মোট বকেয়া</div>
+<div class="summary-value" id="dashDue">৳ ০</div>
+</div>
+
+<div class="summary-card">
+<div class="summary-label">মোট বিক্রয়</div>
+<div class="summary-value" id="dashGross">৳ ০</div>
+</div>
+
+<div class="summary-card red">
+<div class="summary-label">মোট খরচ</div>
+<div class="summary-value" id="dashExpenses">৳ ০</div>
+</div>
+
+</div>
+
+<div class="card">
+<div class="section-title">📅 আজকের হিসাব</div>
+
+<div class="info-row">
+<span>আজকের বিক্রি</span>
+<strong id="dashToday">৳ ০</strong>
+</div>
+
+<div class="info-row">
+<span>নিট ক্যাশ</span>
+<strong id="dashNet">৳ ০</strong>
+</div>
+
+</div>
+
+<div class="card">
+<div class="section-title">💡 SMART BUSINESS</div>
+<p class="small-text">
+আপনার কাপড় বিক্রি, সেলাইয়ের অর্ডার, কাস্টমারের জমা-বকেয়া এবং দোকানের খরচ—সবকিছু এক জায়গায় পরিচালনা করুন।
+</p>
+</div>
+
+</section>
+<!-- FABRIC SALES PAGE -->
+<section class="page" id="salesPage">
+
+<div class="page-title">🧵 কাপড় বিক্রির হিসাব</div>
+
+<div class="card">
+<form id="saleForm">
+
+<div class="form-group">
+<label>কাস্টমারের নাম</label>
+<input type="text" id="saleCustomer" class="form-control" required>
+</div>
+
+<div class="form-group">
+<label>মোবাইল নম্বর</label>
+<input type="tel" id="salePhone" class="form-control">
+</div>
+
+<div class="form-row">
+<div class="form-group">
+<label>বিক্রির তারিখ</label>
+<input type="date" id="saleDate" class="form-control" required>
+</div>
+
+<div class="form-group">
+<label>কাপড়ের নাম</label>
+<input type="text" id="saleProduct" class="form-control" placeholder="যেমন: সুতি কাপড়" required>
+</div>
+</div>
+
+<div class="form-row">
+<div class="form-group">
+<label>পরিমাণ</label>
+<input type="number" id="saleQuantity" class="form-control" min="0.01" step="any" required>
+</div>
+
+<div class="form-group">
+<label>একক</label>
+<select id="saleUnit" class="form-control">
+<option value="গজ">গজ</option>
+<option value="মিটার">মিটার</option>
+<option value="পিস">পিস</option>
+<option value="কেজি">কেজি</option>
+</select>
+</div>
+</div>
+
+<div class="form-row">
+<div class="form-group">
+<label>প্রতি এককের মূল্য</label>
+<input type="number" id="salePrice" class="form-control" min="0" step="any" required>
+</div>
+
+<div class="form-group">
+<label>মোট মূল্য</label>
+<input type="number" id="saleTotal" class="form-control" readonly>
+</div>
+</div>
+
+<div class="form-group">
+<label>জমা টাকা</label>
+<input type="number" id="salePaid" class="form-control" min="0" step="any" value="0">
+</div>
+
+<div class="form-group">
+<label>অতিরিক্ত বিবরণ</label>
+<textarea id="saleDetails" class="form-control" placeholder="প্রয়োজনীয় তথ্য"></textarea>
+</div>
+
+<button type="submit" class="btn btn-full">➕ বিক্রির হিসাব সংরক্ষণ</button>
+
+</form>
+</div>
+
+<div class="section-title">📋 বিক্রির তালিকা</div>
+
+<div class="search-box">
+<input type="search" id="saleSearch" class="form-control" placeholder="নাম বা মোবাইল দিয়ে খুঁজুন">
+</div>
+
+<div id="salesList"></div>
+
+</section>
+
+
+<!-- TAILORING ORDERS PAGE -->
+<section class="page" id="ordersPage">
+
+<div class="page-title">✂️ সেলাইয়ের অর্ডার</div>
+
+<div class="card">
+
+<form id="orderForm">
+
+<div class="form-group">
+<label>কাস্টমারের নাম</label>
+<input type="text" id="orderCustomer" class="form-control" required>
+</div>
+
+<div class="form-group">
+<label>মোবাইল নম্বর</label>
+<input type="tel" id="orderPhone" class="form-control">
+</div>
+
+<div class="form-row">
+
+<div class="form-group">
+<label>অর্ডারের তারিখ</label>
+<input type="date" id="orderDate" class="form-control" required>
+</div>
+
+<div class="form-group">
+<label>ডেলিভারির তারিখ</label>
+<input type="date" id="orderDelivery" class="form-control" required>
+</div>
+
+</div>
+
+<div class="divider"></div>
+
+<div class="section-title">👔 পোশাকের বিবরণ</div>
+
+<p class="small-text" style="margin-bottom:12px;">
+একটি অর্ডারে একাধিক ধরনের পোশাক যোগ করতে পারবেন। প্রতিটি পোশাকের মাপ, পরিমাণ ও মূল্য আলাদাভাবে লিখুন।
+</p>
+
+<div id="orderItems"></div>
+
+<button type="button" class="btn btn-light btn-full" onclick="addOrderItem()">
+➕ নতুন পোশাক যোগ করুন
+</button>
+
+<div class="order-total-box">
+<span>সর্বমোট অর্ডার মূল্য</span>
+<strong id="orderTotal">৳ ০</strong>
+</div>
+
+<div class="form-group">
+<label>প্রাথমিক জমা টাকা</label>
+<input type="number" id="orderPaid" class="form-control" min="0" step="any" value="0">
+</div>
+
+<div class="form-group">
+<label>অতিরিক্ত নোট</label>
+<textarea id="orderDetails" class="form-control" placeholder="অর্ডার সম্পর্কে অতিরিক্ত তথ্য"></textarea>
+</div>
+
+<button type="submit" class="btn btn-full">
+✅ অর্ডার সংরক্ষণ করুন
+</button>
+
+</form>
+</div>
+
+<div class="section-title">📋 অর্ডারের তালিকা</div>
+
+<div class="search-box">
+<input type="search" id="orderSearch" class="form-control" placeholder="অর্ডার নম্বর, নাম বা মোবাইল দিয়ে খুঁজুন">
+</div>
+
+<div id="ordersList"></div>
+
+</section>
+
+
+<!-- ACCOUNTS PAGE -->
+<section class="page" id="accountsPage">
+
+<div class="page-title">💰 হিসাব-নিকাশ</div>
+
+<div class="summary-grid">
+
+<div class="summary-card green">
+<div class="summary-label">মোট জমা</div>
+<div class="summary-value" id="accountReceived">৳ ০</div>
+</div>
+
+<div class="summary-card orange">
+<div class="summary-label">মোট বকেয়া</div>
+<div class="summary-value" id="accountDue">৳ ০</div>
+</div>
+
+<div class="summary-card red">
+<div class="summary-label">মোট খরচ</div>
+<div class="summary-value" id="accountExpenses">৳ ০</div>
+</div>
+
+<div class="summary-card blue">
+<div class="summary-label">ক্যাশ হাতে</div>
+<div class="summary-value" id="accountCash">৳ ০</div>
+</div>
+
+</div>
+
+
+<!-- EXPENSE FORM -->
+<div class="card">
+
+<div class="section-title">➖ নতুন খরচ যোগ করুন</div>
+
+<form id="accountExpenseForm">
+
+<div class="form-group">
+<label>খরচের বিবরণ</label>
+<input type="text" id="accountExpenseName" class="form-control" placeholder="যেমন: দোকান ভাড়া" required>
+</div>
+
+<div class="form-row">
+
+<div class="form-group">
+<label>টাকার পরিমাণ</label>
+<input type="number" id="accountExpenseAmount" class="form-control" min="0.01" step="any" required>
+</div>
+
+<div class="form-group">
+<label>তারিখ</label>
+<input type="date" id="accountExpenseDate" class="form-control" required>
+</div>
+
+</div>
+
+<div class="form-group">
+<label>বিস্তারিত</label>
+<textarea id="accountExpenseDetails" class="form-control" placeholder="অতিরিক্ত তথ্য"></textarea>
+</div>
+
+<button type="submit" class="btn btn-full btn-red">
+➕ খরচ সংরক্ষণ করুন
+</button>
+
+</form>
+</div>
+
+
+<!-- EXPENSE LIST -->
+<div class="section-title">📋 খরচের তালিকা</div>
+
+<div class="search-box">
+<input type="search" id="accountExpenseSearch" class="form-control" placeholder="খরচের নাম দিয়ে খুঁজুন">
+</div>
+
+<div id="accountExpensesList"></div>
+
+
+<!-- PAYMENT HISTORY -->
+<div class="section-title">💳 পেমেন্টের ইতিহাস</div>
+
+<div id="paymentHistory"></div>
+
+
+<!-- CUSTOMER NOTES -->
+<div class="card">
+
+<div class="section-title">📝 কাস্টমারের নোট</div>
+
+<form id="noteForm">
+
+<div class="form-group">
+<label>কাস্টমারের নাম</label>
+<input type="text" id="noteCustomer" class="form-control" required>
+</div>
+
+<div class="form-group">
+<label>নোট</label>
+<textarea id="noteText" class="form-control" required placeholder="কাস্টমার সম্পর্কে প্রয়োজনীয় তথ্য লিখুন"></textarea>
+</div>
+
+<button type="submit" class="btn btn-full btn-blue">
+💾 নোট সংরক্ষণ করুন
+</button>
+
+</form>
+
+<div class="divider"></div>
+
+<div id="customerNotesList"></div>
+
+</div>
+
+</section>
+<!-- CALCULATOR PAGE -->
+<section class="page" id="calculatorPage">
+
+<div class="page-title">🧮 ক্যালকুলেটর</div>
+
+<div class="card">
+
+<div class="calculator">
+
+<input type="text" id="calcDisplay" class="calc-display"
+placeholder="0" readonly>
+
+<div class="calc-grid">
+
+<button class="clear" onclick="calcClear()">C</button>
+<button class="clear" onclick="calcDelete()">⌫</button>
+<button class="operator" onclick="calcInput('%')">%</button>
+<button class="operator" onclick="calcInput('/')">÷</button>
+
+<button onclick="calcInput('7')">7</button>
+<button onclick="calcInput('8')">8</button>
+<button onclick="calcInput('9')">9</button>
+<button class="operator" onclick="calcInput('*')">×</button>
+
+<button onclick="calcInput('4')">4</button>
+<button onclick="calcInput('5')">5</button>
+<button onclick="calcInput('6')">6</button>
+<button class="operator" onclick="calcInput('-')">−</button>
+
+<button onclick="calcInput('1')">1</button>
+<button onclick="calcInput('2')">2</button>
+<button onclick="calcInput('3')">3</button>
+<button class="operator" onclick="calcInput('+')">+</button>
+
+<button onclick="calcInput('0')">0</button>
+<button onclick="calcInput('00')">00</button>
+<button onclick="calcInput('.')">.</button>
+<button class="equal" onclick="calcResult()">=</button>
+
+</div>
+</div>
+
+<p class="small-text" style="margin-top:12px;">
+সাধারণ যোগ, বিয়োগ, গুণ ও ভাগের হিসাব করতে পারবেন।
+</p>
+
+</div>
+
+</section>
+
+
+<!-- SETTINGS PAGE -->
+<section class="page" id="settingsPage">
+
+<div class="page-title">⚙️ সেটিংস</div>
+
+<div class="card">
+
+<div class="section-title">🏪 দোকানের তথ্য</div>
+
+<form id="settingsForm">
+
+<div class="form-group">
+<label>দোকানের নাম</label>
+<input type="text" id="settingShopName" class="form-control"
+placeholder="দোকানের নাম">
+</div>
+
+<div class="form-group">
+<label>মালিকের নাম</label>
+<input type="text" id="settingOwner" class="form-control"
+placeholder="মালিকের নাম">
+</div>
+
+<div class="form-group">
+<label>মোবাইল নম্বর</label>
+<input type="tel" id="settingPhone" class="form-control"
+placeholder="মোবাইল নম্বর">
+</div>
+
+<div class="form-group">
+<label>দোকানের ঠিকানা</label>
+<textarea id="settingAddress" class="form-control"
+placeholder="দোকানের ঠিকানা"></textarea>
+</div>
+
+<button type="submit" class="btn btn-full">
+💾 সেটিংস সংরক্ষণ
+</button>
+
+</form>
+
+</div>
+
+
+<div class="card">
+
+<div class="section-title">💾 ডেটা ব্যাকআপ</div>
+
+<p class="small-text" style="margin-bottom:12px;">
+আপনার দোকানের তথ্য JSON ফাইল হিসেবে সংরক্ষণ করতে পারবেন। প্রয়োজনে সেই ফাইল থেকে তথ্য ফিরিয়ে আনতে পারবেন।
+</p>
+
+<button class="btn btn-full btn-blue"
+onclick="exportBackup()">
+⬇️ ব্যাকআপ ডাউনলোড
+</button>
+
+<div class="divider"></div>
+
+<div class="form-group">
+<label>ব্যাকআপ ফাইল থেকে তথ্য ফিরিয়ে আনুন</label>
+<input type="file" id="backupFile" class="form-control" accept=".json,application/json">
+</div>
+
+<button class="btn btn-full btn-orange"
+onclick="importBackup()">
+⬆️ ব্যাকআপ পুনরুদ্ধার
+</button>
+
+</div>
+
+<div class="card">
+
+<div class="section-title">ℹ️ সফটওয়্যার পরিচিতি</div>
+
+<div class="info-row">
+<span>সফটওয়্যার</span>
+<strong>SMART BUSINESS</strong>
+</div>
+
+<div class="info-row">
+<span>সংস্করণ</span>
+<strong>3.2</strong>
+</div>
+
+<div class="info-row">
+<span>সিস্টেম</span>
+<strong>Men's Fabrics & Tailors</strong>
+</div>
+
+</div>
+
+</section>
+
+
+<!-- OLD EXPENSE PAGE (HIDDEN COMPATIBILITY) -->
+<section class="page" id="expensesPage" style="display:none;">
+
+<form id="expenseForm">
+<input type="text" id="expenseName">
+<input type="number" id="expenseAmount">
+<input type="date" id="expenseDate">
+<textarea id="expenseDetails"></textarea>
+</form>
+
+<div id="expensesList"></div>
+
+</section>
+
+
+<!-- PAYMENT MODAL -->
+<div class="modal" id="paymentModal">
+
+<div class="modal-box">
+
+<div class="modal-title">
+পেমেন্ট গ্রহণ
+<button class="modal-close"
+type="button"
+onclick="closeModal('paymentModal')">✕</button>
+</div>
+
+<form id="paymentForm">
+
+<input type="hidden" id="paymentRecordId">
+<input type="hidden" id="paymentRecordType">
+
+<div class="form-group">
+<label>কাস্টমার</label>
+<input type="text" id="paymentCustomer"
+class="form-control" readonly>
+</div>
+
+<div class="form-group">
+<label>বকেয়া টাকা</label>
+<input type="text" id="paymentDue"
+class="form-control" readonly>
+</div>
+
+<div class="form-group">
+<label>জমার পরিমাণ</label>
+<input type="number" id="paymentAmount"
+class="form-control" min="0.01" step="any" required>
+</div>
+
+<div class="form-group">
+<label>জমার তারিখ</label>
+<input type="date" id="paymentDate"
+class="form-control" required>
+</div>
+
+<div class="form-group">
+<label>নোট</label>
+<textarea id="paymentNote" class="form-control"
+placeholder="পেমেন্ট সম্পর্কে তথ্য"></textarea>
+</div>
+
+<button type="submit" class="btn btn-full btn-green">
+💰 পেমেন্ট সংরক্ষণ
+</button>
+
+</form>
+
+</div>
+
+</div>
+
+
+<!-- DETAILS MODAL -->
+<div class="modal" id="detailsModal">
+
+<div class="modal-box">
+
+<div class="modal-title">
+বিস্তারিত তথ্য
+<button class="modal-close"
+type="button"
+onclick="closeModal('detailsModal')">✕</button>
+</div>
+
+<div id="detailsContent"></div>
+
+<button class="btn btn-full btn-light"
+style="margin-top:15px;"
+onclick="closeModal('detailsModal')">
+বন্ধ করুন
+</button>
+
+</div>
+
+</div>
+
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+
+<!-- BOTTOM NAVIGATION -->
+<nav class="bottom-nav">
+
+<button class="nav-btn active" onclick="showPage('dashboardPage',this)">
+<span class="nav-icon">📊</span>
+<span>হোম</span>
+</button>
+
+<button class="nav-btn" onclick="showPage('salesPage',this)">
+<span class="nav-icon">🧵</span>
+<span>বিক্রি</span>
+</button>
+
+<button class="nav-btn" onclick="showPage('ordersPage',this)">
+<span class="nav-icon">✂️</span>
+<span>অর্ডার</span>
+</button>
+
+<button class="nav-btn" onclick="showPage('accountsPage',this)">
+<span class="nav-icon">💰</span>
+<span>হিসাব</span>
+</button>
+
+<button class="nav-btn" onclick="showPage('calculatorPage',this)">
+<span class="nav-icon">🧮</span>
+<span>ক্যালকুলেটর</span>
+</button>
+
+<button class="nav-btn" onclick="showPage('settingsPage',this)">
+<span class="nav-icon">⚙️</span>
+<span>সেটিংস</span>
+</button>
+
+</nav>
+<script>
+
+/* =====================================
+   SMART BUSINESS VERSION 3.2
+   MAIN JAVASCRIPT
+===================================== */
+
+
+/* ---------- DATA STORAGE ---------- */
+
+let sales = [];
+let orders = [];
+let notes = [];
+let expenses = [];
+let settings = {};
+
+let nextOrderNumber = 1;
+
+function loadData(){
+// New account starts clean. Old device test records are deliberately not imported.
+sales = [];
+orders = [];
+notes = [];
+expenses = [];
+settings = {};
+
+orders.forEach(o=>{
+
+if(!o.items || !Array.isArray(o.items)){
+
+o.items = [{
+product:o.product || "পুরোনো অর্ডার",
+quantity:Number(o.quantity) || 1,
+price:Number(o.price) || Number(o.total) || 0,
+total:Number(o.total) || 0,
+measurements:typeof o.measurements === "string"
+? o.measurements
+: JSON.stringify(o.measurements || {})
+}];
+
+}
+
+if(!o.orderNumber){
+o.orderNumber = "";
+}
+
+if(!Array.isArray(o.payments)){
+o.payments = [];
+}
+
+if(!o.status){
+o.status = "চলমান";
+}
+
+});
+
+saveAll();
+
+}
+
+function saveAll(){
+
+localStorage.setItem("fabricSales",JSON.stringify(sales));
+localStorage.setItem("tailorOrders",JSON.stringify(orders));
+localStorage.setItem("customerNotes",JSON.stringify(notes));
+localStorage.setItem("shopExpenses",JSON.stringify(expenses));
+localStorage.setItem("smartBusinessSettings",JSON.stringify(settings));
+if(window.SBCloudSave) window.SBCloudSave({sales,orders,notes,expenses,settings});
+
+}
+
+
+/* ---------- COMMON FUNCTIONS ---------- */
+
+function money(value){
+
+return "৳ " + (Number(value)||0).toLocaleString("en-IN",{
+maximumFractionDigits:2
+});
+
+}
+
+function escapeHTML(value){
+
+return String(value ?? "").replace(/[&<>"']/g,function(c){
+return {
+"&":"&amp;",
+"<":"&lt;",
+">":"&gt;",
+'"':"&quot;",
+"'":"&#039;"
+}[c];
+});
+
+}
+
+function today(){
+
+return new Date().toLocaleDateString("en-CA");
+
+}
+
+function showToast(message){
+
+const toast = document.getElementById("toast");
+
+toast.textContent = message;
+toast.classList.add("show");
+
+setTimeout(()=>{
+toast.classList.remove("show");
+},2500);
+
+}
+
+function closeModal(id){
+
+document.getElementById(id).classList.remove("show");
+
+}
+
+function getPaid(record){
+
+if(Array.isArray(record.payments) && record.payments.length){
+
+return record.payments.reduce((sum,p)=>{
+return sum + Number(p.amount || 0);
+},0);
+
+}
+
+return Number(record.paid) || 0;
+
+}
+
+function getDue(record){
+
+return Math.max(0,Number(record.total || 0)-getPaid(record));
+
+}
+
+function getOrderItems(order){
+
+if(Array.isArray(order.items)){
+return order.items;
+}
+
+return [{
+product:order.product || "পুরোনো অর্ডার",
+quantity:Number(order.quantity)||1,
+price:Number(order.price)||0,
+total:Number(order.total)||0,
+measurements:order.measurements || ""
+}];
+
+}
+
+function getOrderSummary(order){
+
+return getOrderItems(order).map(item=>{
+return escapeHTML(item.product)+" × "+Number(item.quantity);
+}).join(", ");
+
+}
+
+
+/* ---------- PAGE NAVIGATION ---------- */
+
+function showPage(pageId,button){
+
+document.querySelectorAll(".page").forEach(page=>{
+page.classList.remove("active");
+});
+
+const page = document.getElementById(pageId);
+
+if(page){
+page.classList.add("active");
+}
+
+document.querySelectorAll(".nav-btn").forEach(btn=>{
+btn.classList.remove("active");
+});
+
+if(button){
+button.classList.add("active");
+}
+
+renderAll();
+
+}
+
+
+/* ---------- AUTOMATIC ORDER NUMBER ---------- */
+
+function generateOrderNumber(){
+
+let highest = 0;
+
+orders.forEach(order=>{
+
+const number = String(order.orderNumber || "");
+
+const match = number.match(/ORD-(\d+)/i);
+
+if(match){
+highest = Math.max(highest,Number(match[1]));
+}
+
+});
+
+highest = Math.max(highest,nextOrderNumber-1);
+
+const newNumber = highest+1;
+
+nextOrderNumber = newNumber+1;
+
+return "ORD-"+String(newNumber).padStart(4,"0");
+
+}
+
+
+/* =====================================
+   MULTIPLE ORDER ITEMS
+===================================== */
+
+function addOrderItem(data={}){
+
+const container = document.getElementById("orderItems");
+
+const item = document.createElement("div");
+
+item.className = "order-item";
+
+item.innerHTML = `
+
+<div class="order-item-header">
+
+<span class="order-item-title">👔 পোশাকের বিবরণ</span>
+
+<button type="button" class="btn btn-red"
+onclick="removeOrderItem(this)">
+✕ বাদ দিন
+</button>
+
+</div>
+
+<div class="form-group">
+
+<label>পোশাকের নাম</label>
+
+<input type="text"
+class="form-control item-product"
+placeholder="যেমন: জুব্বা / পাঞ্জাবি"
+required>
+
+</div>
+
+<div class="form-row">
+
+<div class="form-group">
+
+<label>পরিমাণ (পিস)</label>
+
+<input type="number"
+class="form-control item-quantity"
+min="1"
+step="1"
+value="1"
+required>
+
+</div>
+
+<div class="form-group">
+
+<label>প্রতি পিস সেলাই মূল্য</label>
+
+<input type="number"
+class="form-control item-price"
+min="0"
+step="any"
+value="0"
+required>
+
+</div>
+
+</div>
+
+<div class="order-total-box">
+
+<span>এই পোশাকের মোট মূল্য</span>
+
+<strong class="item-subtotal">৳ ০</strong>
+
+</div>
+
+<div class="form-group">
+
+<label>এই পোশাকের মাপ</label>
+
+<textarea class="form-control item-measurements"
+placeholder="যেমন: লম্বা, বুক, হাতা, কোমর, কাঁধ ইত্যাদি"></textarea>
+
+</div>
+
+`;
+
+container.appendChild(item);
+
+item.querySelector(".item-product").value = data.product || "";
+item.querySelector(".item-quantity").value = data.quantity || 1;
+item.querySelector(".item-price").value = data.price || 0;
+item.querySelector(".item-measurements").value = data.measurements || "";
+
+item.querySelectorAll("input").forEach(input=>{
+input.addEventListener("input",calculateOrderTotal);
+});
+
+calculateOrderTotal();
+
+}
+
+function removeOrderItem(button){
+
+const items = document.querySelectorAll(".order-item");
+
+if(items.length<=1){
+
+showToast("কমপক্ষে একটি পোশাক রাখতে হবে");
+
+return;
+
+}
+
+button.closest(".order-item").remove();
+
+calculateOrderTotal();
+
+}
+
+function calculateOrderTotal(){
+
+let total = 0;
+
+document.querySelectorAll(".order-item").forEach(item=>{
+
+const quantity = Number(item.querySelector(".item-quantity").value)||0;
+
+const price = Number(item.querySelector(".item-price").value)||0;
+
+const subtotal = quantity*price;
+
+total += subtotal;
+
+item.querySelector(".item-subtotal").textContent = money(subtotal);
+
+});
+
+document.getElementById("orderTotal").textContent = money(total);
+
+return total;
+
+}
+
+function collectOrderItems(){
+
+const result = [];
+
+document.querySelectorAll(".order-item").forEach(item=>{
+
+const product = item.querySelector(".item-product").value.trim();
+
+const quantity = Number(item.querySelector(".item-quantity").value);
+
+const price = Number(item.querySelector(".item-price").value);
+
+const measurements = item.querySelector(".item-measurements").value.trim();
+
+result.push({
+
+product,
+quantity,
+price,
+total:quantity*price,
+measurements
+
+});
+
+});
+
+return result;
+
+}
+
+
+/* =====================================
+   FABRIC SALES
+===================================== */
+
+function calculateSaleTotal(){
+
+const quantity = Number(document.getElementById("saleQuantity").value)||0;
+
+const price = Number(document.getElementById("salePrice").value)||0;
+
+document.getElementById("saleTotal").value = quantity*price;
+
+}
+
+document.getElementById("saleQuantity").addEventListener("input",calculateSaleTotal);
+
+document.getElementById("salePrice").addEventListener("input",calculateSaleTotal);
+
+
+document.getElementById("saleForm").addEventListener("submit",function(e){
+
+e.preventDefault();
+
+const total = Number(document.getElementById("saleTotal").value)||0;
+
+const paid = Number(document.getElementById("salePaid").value)||0;
+
+if(paid>total){
+
+showToast("জমার টাকা মোট মূল্যের চেয়ে বেশি হতে পারবে না");
+
+return;
+
+}
+
+const record = {
+
+id:Date.now().toString(),
+
+customer:document.getElementById("saleCustomer").value.trim(),
+
+phone:document.getElementById("salePhone").value.trim(),
+
+date:document.getElementById("saleDate").value,
+
+product:document.getElementById("saleProduct").value.trim(),
+
+quantity:Number(document.getElementById("saleQuantity").value),
+
+unit:document.getElementById("saleUnit").value,
+
+price:Number(document.getElementById("salePrice").value),
+
+total,
+
+paid,
+
+payments:paid>0?[{
+amount:paid,
+date:document.getElementById("saleDate").value,
+note:"প্রাথমিক জমা"
+}]:[],
+
+details:document.getElementById("saleDetails").value.trim()
+
+};
+
+sales.unshift(record);
+
+saveAll();
+
+this.reset();
+
+document.getElementById("saleDate").value = today();
+
+calculateSaleTotal();
+
+renderAll();
+
+showToast("বিক্রির হিসাব সংরক্ষণ হয়েছে");
+
+});
+
+
+/* =====================================
+   CREATE MULTIPLE ITEM ORDER
+===================================== */
+
+document.getElementById("orderForm").addEventListener("submit",function(e){
+
+e.preventDefault();
+
+const items = collectOrderItems();
+
+if(items.length===0){
+
+showToast("অন্তত একটি পোশাক যোগ করুন");
+
+return;
+
+}
+
+for(const item of items){
+
+if(!item.product || item.quantity<=0 || item.price<0){
+
+showToast("পোশাকের নাম, পরিমাণ ও মূল্য ঠিকভাবে দিন");
+
+return;
+
+}
+
+}
+
+const total = items.reduce((sum,item)=>{
+return sum+item.total;
+},0);
+
+const paid = Number(document.getElementById("orderPaid").value)||0;
+
+if(paid<0 || paid>total){
+
+showToast("জমার টাকা সঠিকভাবে লিখুন");
+
+return;
+
+}
+
+const orderNumber = generateOrderNumber();
+
+const order = {
+
+id:Date.now().toString(),
+
+orderNumber,
+
+customer:document.getElementById("orderCustomer").value.trim(),
+
+phone:document.getElementById("orderPhone").value.trim(),
+
+date:document.getElementById("orderDate").value,
+
+delivery:document.getElementById("orderDelivery").value,
+
+items,
+
+total,
+
+paid,
+
+payments:paid>0?[{
+amount:paid,
+date:document.getElementById("orderDate").value,
+note:"প্রাথমিক জমা"
+}]:[],
+
+details:document.getElementById("orderDetails").value.trim(),
+
+status:"চলমান"
+
+};
+
+orders.unshift(order);
+
+saveAll();
+
+this.reset();
+
+document.getElementById("orderDate").value=today();
+
+document.getElementById("orderDelivery").value=today();
+
+document.getElementById("orderItems").innerHTML="";
+
+addOrderItem();
+
+renderAll();
+
+showToast("অর্ডার তৈরি হয়েছে: "+orderNumber);
+
+});
+
+
+/* =====================================
+   RENDER SALES
+===================================== */
+
+function renderSales(){
+
+const list = document.getElementById("salesList");
+
+const search = (document.getElementById("saleSearch").value||"").toLowerCase();
+
+const filtered = sales.filter(s=>{
+
+return [
+
+s.customer,
+s.phone,
+s.product
+
+].join(" ").toLowerCase().includes(search);
+
+});
+
+if(!filtered.length){
+
+list.innerHTML='<div class="empty-state">কোনো বিক্রির তথ্য পাওয়া যায়নি</div>';
+
+return;
+
+}
+
+list.innerHTML=filtered.map(s=>`
+
+<div class="record-card">
+
+<div class="record-header">
+
+<div>
+
+<div class="record-title">${escapeHTML(s.customer)}</div>
+
+<div class="record-sub">
+
+${escapeHTML(s.product)}<br>
+
+${escapeHTML(s.date||"")}<br>
+
+পরিমাণ: ${Number(s.quantity)||0} ${escapeHTML(s.unit||"")}
+
+</div>
+
+</div>
+
+<div class="record-amount">${money(s.total)}</div>
+
+</div>
+
+<div class="info-row">
+<span>জমা</span>
+<strong class="text-green">${money(getPaid(s))}</strong>
+</div>
+
+<div class="info-row">
+<span>বকেয়া</span>
+<strong class="text-orange">${money(getDue(s))}</strong>
+</div>
+
+<div class="record-actions">
+
+${getDue(s)>0?`
+<button class="btn btn-green"
+onclick="openPayment('${s.id}','sale')">+ জমা</button>
+`:''}
+
+<button class="btn btn-blue"
+onclick="showDetails('sale','${s.id}')">বিস্তারিত</button>
+
+<button class="btn btn-red"
+onclick="deleteRecord('sale','${s.id}')">ডিলিট</button>
+
+</div>
+
+</div>
+
+`).join("");
+
+}
+
+
+/* =====================================
+   RENDER ORDERS
+===================================== */
+
+function renderOrders(){
+
+const list = document.getElementById("ordersList");
+
+const search = (document.getElementById("orderSearch").value||"").toLowerCase();
+
+const filtered = orders.filter(o=>{
+
+return [
+
+o.orderNumber,
+o.customer,
+o.phone,
+getOrderItems(o).map(i=>i.product).join(" ")
+
+].join(" ").toLowerCase().includes(search);
+
+});
+
+if(!filtered.length){
+
+list.innerHTML='<div class="empty-state">কোনো অর্ডার পাওয়া যায়নি</div>';
+
+return;
+
+}
+
+list.innerHTML=filtered.map(o=>{
+
+const due = getDue(o);
+
+const statusClass = o.status==="বাতিল"
+?"cancelled"
+:o.status==="ডেলিভারি সম্পন্ন"
+?""
+:"pending";
+
+return `
+
+<div class="record-card">
+
+<div class="record-header">
+
+<div>
+
+<div class="order-number">${escapeHTML(o.orderNumber||"পুরোনো অর্ডার")}</div>
+
+<div class="record-title">${escapeHTML(o.customer)}</div>
+
+<div class="record-sub">
+
+মোবাইল: ${escapeHTML(o.phone||"নেই")}<br>
+
+পোশাক: ${getOrderSummary(o)}<br>
+
+অর্ডার: ${escapeHTML(o.date||"")}<br>
+
+ডেলিভারি: ${escapeHTML(o.delivery||"")}
+
+</div>
+
+</div>
+
+<div class="record-amount">${money(o.total)}</div>
+
+</div>
+
+<div style="margin:8px 0;">
+
+<span class="badge ${statusClass}">${escapeHTML(o.status)}</span>
+
+</div>
+
+<div class="info-row">
+<span>জমা</span>
+<strong class="text-green">${money(getPaid(o))}</strong>
+</div>
+
+<div class="info-row">
+<span>বকেয়া</span>
+<strong class="text-orange">${money(due)}</strong>
+</div>
+
+<div class="record-actions">
+
+${due>0 && o.status!=="বাতিল"?`
+<button class="btn btn-green"
+onclick="openPayment('${o.id}','order')">+ জমা</button>
+`:''}
+
+<button class="btn btn-blue"
+onclick="showDetails('order','${o.id}')">বিস্তারিত</button>
+
+${o.status!=="ডেলিভারি সম্পন্ন" && o.status!=="বাতিল"?`
+<button class="btn btn-orange"
+onclick="completeOrder('${o.id}')">ডেলিভারি সম্পন্ন</button>
+`:''}
+
+<button class="btn btn-red"
+onclick="deleteRecord('order','${o.id}')">ডিলিট</button>
+
+</div>
+
+</div>
+
+`;
+
+}).join("");
+
+}
+
+
+/* =====================================
+   COMPLETE ORDER
+===================================== */
+
+function completeOrder(id){
+
+const order = orders.find(o=>o.id===id);
+
+if(!order)return;
+
+if(getDue(order)>0){
+
+if(!confirm("এই অর্ডারের বকেয়া আছে। তবুও ডেলিভারি সম্পন্ন করবেন?")){
+return;
+}
+
+}
+
+if(confirm("অর্ডারটি ডেলিভারি সম্পন্ন করবেন?")){
+
+order.status="ডেলিভারি সম্পন্ন";
+
+saveAll();
+
+renderAll();
+
+showToast("ডেলিভারি সম্পন্ন হয়েছে");
+
+}
+
+}
+
+
+/* =====================================
+   DELETE RECORD
+===================================== */
+
+function deleteRecord(type,id){
+
+if(!confirm("আপনি কি নিশ্চিতভাবে এই তথ্য মুছে ফেলতে চান?")){
+return;
+}
+
+if(type==="sale"){
+
+sales=sales.filter(x=>x.id!==id);
+
+}else{
+
+orders=orders.filter(x=>x.id!==id);
+
+}
+
+saveAll();
+
+renderAll();
+
+showToast("তথ্য মুছে ফেলা হয়েছে");
+
+}
+
+
+/* =====================================
+   PAYMENT SYSTEM
+===================================== */
+
+function openPayment(id,type){
+
+let record;
+
+if(type==="sale"){
+record=sales.find(x=>x.id===id);
+}else{
+record=orders.find(x=>x.id===id);
+}
+
+if(!record)return;
+
+document.getElementById("paymentRecordId").value=id;
+
+document.getElementById("paymentRecordType").value=type;
+
+document.getElementById("paymentCustomer").value=record.customer;
+
+document.getElementById("paymentDue").value=money(getDue(record));
+
+document.getElementById("paymentAmount").value="";
+
+document.getElementById("paymentAmount").max=getDue(record);
+
+document.getElementById("paymentDate").value=today();
+
+document.getElementById("paymentNote").value="";
+
+document.getElementById("paymentModal").classList.add("show");
+
+}
+
+
+document.getElementById("paymentForm").addEventListener("submit",function(e){
+
+e.preventDefault();
+
+const id=document.getElementById("paymentRecordId").value;
+
+const type=document.getElementById("paymentRecordType").value;
+
+const amount=Number(document.getElementById("paymentAmount").value);
+
+const date=document.getElementById("paymentDate").value;
+
+const note=document.getElementById("paymentNote").value.trim();
+
+let record;
+
+if(type==="sale"){
+record=sales.find(x=>x.id===id);
+}else{
+record=orders.find(x=>x.id===id);
+}
+
+if(!record)return;
+
+if(amount<=0 || amount>getDue(record)){
+
+showToast("সঠিক জমার পরিমাণ লিখুন");
+
+return;
+
+}
+
+if(!Array.isArray(record.payments)){
+record.payments=[];
+}
+
+record.payments.push({
+amount,
+date,
+note
+});
+
+record.paid=getPaid(record);
+
+saveAll();
+
+closeModal("paymentModal");
+
+renderAll();
+
+showToast("পেমেন্ট সংরক্ষণ হয়েছে");
+
+});
+
+
+/* =====================================
+   DETAILS MODAL
+===================================== */
+
+function showDetails(type,id){
+
+let record;
+
+if(type==="sale"){
+record=sales.find(x=>x.id===id);
+}else{
+record=orders.find(x=>x.id===id);
+}
+
+if(!record)return;
+
+let html="";
+
+html+=`<div class="info-row"><span>কাস্টমার</span><strong>${escapeHTML(record.customer)}</strong></div>`;
+
+html+=`<div class="info-row"><span>মোবাইল</span><strong>${escapeHTML(record.phone||"নেই")}</strong></div>`;
+
+if(type==="order"){
+
+html+=`<div class="info-row"><span>অর্ডার নম্বর</span><strong>${escapeHTML(record.orderNumber||"পুরোনো অর্ডার")}</strong></div>`;
+
+html+=`<div class="info-row"><span>অর্ডারের তারিখ</span><strong>${escapeHTML(record.date||"")}</strong></div>`;
+
+html+=`<div class="info-row"><span>ডেলিভারির তারিখ</span><strong>${escapeHTML(record.delivery||"")}</strong></div>`;
+
+getOrderItems(record).forEach((item,index)=>{
+
+html+=`
+
+<div class="card" style="margin-top:12px;">
+
+<strong>পোশাক ${index+1}: ${escapeHTML(item.product)}</strong>
+
+<div class="info-row">
+<span>পরিমাণ</span>
+<strong>${Number(item.quantity)} পিস</strong>
+</div>
+
+<div class="info-row">
+<span>প্রতি পিস মূল্য</span>
+<strong>${money(item.price)}</strong>
+</div>
+
+<div class="info-row">
+<span>মোট মূল্য</span>
+<strong>${money(item.total)}</strong>
+</div>
+
+<div class="divider"></div>
+
+<strong>মাপ</strong>
+
+<p class="small-text" style="margin-top:8px;white-space:pre-wrap;">
+${escapeHTML(item.measurements||"কোনো মাপ দেওয়া হয়নি")}
+</p>
+
+</div>
+
+`;
+
+});
+
+html+=`<div class="info-row"><span>অর্ডারের অবস্থা</span><strong>${escapeHTML(record.status)}</strong></div>`;
+
+}else{
+
+html+=`<div class="info-row"><span>পণ্য</span><strong>${escapeHTML(record.product)}</strong></div>`;
+
+html+=`<div class="info-row"><span>পরিমাণ</span><strong>${Number(record.quantity)} ${escapeHTML(record.unit||"")}</strong></div>`;
+
+html+=`<div class="info-row"><span>একক মূল্য</span><strong>${money(record.price)}</strong></div>`;
+
+html+=`<div class="info-row"><span>তারিখ</span><strong>${escapeHTML(record.date||"")}</strong></div>`;
+
+}
+
+html+=`<div class="divider"></div>`;
+
+html+=`<div class="info-row"><span>মোট মূল্য</span><strong>${money(record.total)}</strong></div>`;
+
+html+=`<div class="info-row"><span>মোট জমা</span><strong class="text-green">${money(getPaid(record))}</strong></div>`;
+
+html+=`<div class="info-row"><span>বকেয়া</span><strong class="text-orange">${money(getDue(record))}</strong></div>`;
+
+if(record.details){
+
+html+=`<div class="divider"></div><strong>অতিরিক্ত নোট</strong><p class="small-text" style="margin-top:7px;">${escapeHTML(record.details)}</p>`;
+
+}
+
+html+=`<div class="divider"></div><strong>পেমেন্টের ইতিহাস</strong>`;
+
+const payments=record.payments||[];
+
+if(payments.length){
+
+payments.forEach(p=>{
+
+html+=`
+
+<div class="info-row">
+
+<span>${escapeHTML(p.date||"")}</span>
+
+<strong>${money(p.amount)}</strong>
+
+</div>
+
+${p.note?`<p class="small-text">${escapeHTML(p.note)}</p>`:""}
+
+`;
+
+});
+
+}else{
+
+html+=`<p class="small-text" style="margin-top:8px;">কোনো পেমেন্টের তথ্য নেই</p>`;
+
+}
+
+document.getElementById("detailsContent").innerHTML=html;
+
+document.getElementById("detailsModal").classList.add("show");
+
+}
+
+
+/* =====================================
+   EXPENSE MANAGEMENT
+===================================== */
+
+document.getElementById("accountExpenseForm").addEventListener("submit",function(e){
+
+e.preventDefault();
+
+const amount=Number(document.getElementById("accountExpenseAmount").value);
+
+if(amount<=0){
+
+showToast("সঠিক খরচের পরিমাণ লিখুন");
+
+return;
+
+}
+
+expenses.unshift({
+
+id:Date.now().toString(),
+
+name:document.getElementById("accountExpenseName").value.trim(),
+
+amount,
+
+date:document.getElementById("accountExpenseDate").value,
+
+details:document.getElementById("accountExpenseDetails").value.trim()
+
+});
+
+saveAll();
+
+this.reset();
+
+document.getElementById("accountExpenseDate").value=today();
+
+renderAll();
+
+showToast("খরচ সংরক্ষণ হয়েছে");
+
+});
+
+
+function renderExpenses(){
+
+const list=document.getElementById("accountExpensesList");
+
+const search=(document.getElementById("accountExpenseSearch").value||"").toLowerCase();
+
+const filtered=expenses.filter(e=>{
+
+return [e.name,e.details].join(" ").toLowerCase().includes(search);
+
+});
+
+if(!filtered.length){
+
+list.innerHTML='<div class="empty-state">কোনো খরচের তথ্য নেই</div>';
+
+return;
+
+}
+
+list.innerHTML=filtered.map(e=>`
+
+<div class="record-card">
+
+<div class="record-header">
+
+<div>
+
+<div class="record-title">${escapeHTML(e.name)}</div>
+
+<div class="record-sub">${escapeHTML(e.date||"")}</div>
+
+</div>
+
+<div class="record-amount text-red">${money(e.amount)}</div>
+
+</div>
+
+${e.details?`<p class="small-text">${escapeHTML(e.details)}</p>`:""}
+
+<div class="record-actions">
+
+<button class="btn btn-red"
+onclick="deleteExpense('${e.id}')">ডিলিট</button>
+
+</div>
+
+</div>
+
+`).join("");
+
+}
+
+
+function deleteExpense(id){
+
+if(!confirm("এই খরচের তথ্য মুছে ফেলবেন?"))return;
+
+expenses=expenses.filter(e=>e.id!==id);
+
+saveAll();
+
+renderAll();
+
+showToast("খরচ মুছে ফেলা হয়েছে");
+
+}
+
+
+/* =====================================
+   PAYMENT HISTORY
+===================================== */
+
+function renderPaymentHistory(){
+
+const list=document.getElementById("paymentHistory");
+
+let all=[];
+
+sales.forEach(s=>{
+
+(s.payments||[]).forEach(p=>{
+
+all.push({
+
+customer:s.customer,
+date:p.date,
+amount:p.amount,
+note:p.note,
+type:"কাপড় বিক্রি"
+
+});
+
+});
+
+});
+
+orders.forEach(o=>{
+
+(o.payments||[]).forEach(p=>{
+
+all.push({
+
+customer:o.customer,
+date:p.date,
+amount:p.amount,
+note:p.note,
+type:"সেলাই অর্ডার",
+orderNumber:o.orderNumber
+
+});
+
+});
+
+});
+
+all.sort((a,b)=>String(b.date).localeCompare(String(a.date)));
+
+if(!all.length){
+
+list.innerHTML='<div class="empty-state">কোনো পেমেন্টের ইতিহাস নেই</div>';
+
+return;
+
+}
+
+list.innerHTML=all.map(p=>`
+
+<div class="record-card">
+
+<div class="record-header">
+
+<div>
+
+<div class="record-title">${escapeHTML(p.customer)}</div>
+
+<div class="record-sub">
+
+${escapeHTML(p.type)}<br>
+
+${escapeHTML(p.date||"")}
+
+${p.orderNumber?"<br>"+escapeHTML(p.orderNumber):""}
+
+</div>
+
+</div>
+
+<div class="record-amount text-green">${money(p.amount)}</div>
+
+</div>
+
+${p.note?`<p class="small-text">${escapeHTML(p.note)}</p>`:""}
+
+</div>
+
+`).join("");
+
+}
+
+
+/* =====================================
+   CUSTOMER NOTES
+===================================== */
+
+document.getElementById("noteForm").addEventListener("submit",function(e){
+
+e.preventDefault();
+
+notes.unshift({
+
+id:Date.now().toString(),
+
+customer:document.getElementById("noteCustomer").value.trim(),
+
+text:document.getElementById("noteText").value.trim(),
+
+date:today()
+
+});
+
+saveAll();
+
+this.reset();
+
+renderAll();
+
+showToast("কাস্টমারের নোট সংরক্ষণ হয়েছে");
+
+});
+
+
+function renderNotes(){
+
+const list=document.getElementById("customerNotesList");
+
+if(!notes.length){
+
+list.innerHTML='<div class="empty-state">কোনো নোট নেই</div>';
+
+return;
+
+}
+
+list.innerHTML=notes.map(n=>`
+
+<div class="record-card">
+
+<div class="record-title">${escapeHTML(n.customer)}</div>
+
+<div class="record-sub">${escapeHTML(n.date||"")}</div>
+
+<p style="font-size:13px;margin-top:9px;white-space:pre-wrap;">
+${escapeHTML(n.text)}
+</p>
+
+<div class="record-actions">
+
+<button class="btn btn-red"
+onclick="deleteNote('${n.id}')">ডিলিট</button>
+
+</div>
+
+</div>
+
+`).join("");
+
+}
+
+
+function deleteNote(id){
+
+if(!confirm("এই নোটটি মুছে ফেলবেন?"))return;
+
+notes=notes.filter(n=>n.id!==id);
+
+saveAll();
+
+renderAll();
+
+}
+
+
+/* =====================================
+   ACCOUNTS SUMMARY
+===================================== */
+
+function renderAccounts(){
+
+let received=0;
+let due=0;
+let expenseTotal=0;
+
+sales.forEach(s=>{
+
+received+=getPaid(s);
+due+=getDue(s);
+
+});
+
+orders.forEach(o=>{
+
+received+=getPaid(o);
+due+=getDue(o);
+
+});
+
+expenses.forEach(e=>{
+
+expenseTotal+=Number(e.amount)||0;
+
+});
+
+document.getElementById("accountReceived").textContent=money(received);
+
+document.getElementById("accountDue").textContent=money(due);
+
+document.getElementById("accountExpenses").textContent=money(expenseTotal);
+
+document.getElementById("accountCash").textContent=money(received-expenseTotal);
+
+}
+
+
+/* =====================================
+   DASHBOARD
+===================================== */
+
+function renderDashboard(){
+
+const salesTotal=sales.reduce((sum,s)=>sum+Number(s.total||0),0);
+
+const orderTotal=orders.reduce((sum,o)=>sum+Number(o.total||0),0);
+
+let received=0;
+let due=0;
+
+sales.forEach(s=>{
+received+=getPaid(s);
+due+=getDue(s);
+});
+
+orders.forEach(o=>{
+received+=getPaid(o);
+due+=getDue(o);
+});
+
+const expenseTotal=expenses.reduce((sum,e)=>sum+Number(e.amount||0),0);
+
+const pending=orders.filter(o=>
+o.status!=="ডেলিভারি সম্পন্ন" && o.status!=="বাতিল"
+).length;
+
+const todaySales=sales.filter(s=>s.date===today())
+.reduce((sum,s)=>sum+Number(s.total||0),0);
+
+document.getElementById("dashSales").textContent=money(salesTotal);
+
+document.getElementById("dashOrders").textContent=pending;
+
+document.getElementById("dashReceived").textContent=money(received);
+
+document.getElementById("dashDue").textContent=money(due);
+
+document.getElementById("dashGross").textContent=money(salesTotal+orderTotal);
+
+document.getElementById("dashExpenses").textContent=money(expenseTotal);
+
+document.getElementById("dashToday").textContent=money(todaySales);
+
+document.getElementById("dashNet").textContent=money(received-expenseTotal);
+
+}
+
+
+/* =====================================
+   SETTINGS
+===================================== */
+
+function loadSettings(){
+
+document.getElementById("settingShopName").value=settings.shopName||"";
+
+document.getElementById("settingOwner").value=settings.owner||"";
+
+document.getElementById("settingPhone").value=settings.phone||"";
+
+document.getElementById("settingAddress").value=settings.address||"";
+
+}
+
+
+document.getElementById("settingsForm").addEventListener("submit",function(e){
+
+e.preventDefault();
+
+settings={
+
+shopName:document.getElementById("settingShopName").value.trim(),
+
+owner:document.getElementById("settingOwner").value.trim(),
+
+phone:document.getElementById("settingPhone").value.trim(),
+
+address:document.getElementById("settingAddress").value.trim()
+
+};
+
+saveAll();
+
+showToast("সেটিংস সংরক্ষণ হয়েছে");
+
+});
+
+
+/* =====================================
+   CALCULATOR
+===================================== */
+
+function calcInput(value){
+
+const display=document.getElementById("calcDisplay");
+
+display.value+=value;
+
+}
+
+function calcClear(){
+
+document.getElementById("calcDisplay").value="";
+
+}
+
+function calcDelete(){
+
+const display=document.getElementById("calcDisplay");
+
+display.value=display.value.slice(0,-1);
+
+}
+
+function calcResult(){
+
+const display=document.getElementById("calcDisplay");
+
+const expression=display.value;
+
+if(!expression)return;
+
+if(!/^[0-9+\-*/%.() ]+$/.test(expression)){
+
+showToast("ভুল হিসাব");
+
+return;
+
+}
+
+try{
+
+const result=Function('"use strict";return ('+expression+')')();
+
+if(!Number.isFinite(result)){
+
+throw new Error("Invalid");
+
+}
+
+display.value=String(Number(result.toFixed(8)));
+
+}catch(e){
+
+display.value="";
+
+showToast("সঠিক হিসাব লিখুন");
+
+}
+
+}
+
+
+/* =====================================
+   BACKUP EXPORT
+===================================== */
+
+function exportBackup(){
+
+const backup={
+
+app:"SMART BUSINESS",
+
+version:"3.2",
+
+backupDate:new Date().toISOString(),
+
+fabricSales:sales,
+
+tailorOrders:orders,
+
+customerNotes:notes,
+
+shopExpenses:expenses,
+
+smartBusinessSettings:settings
+
+};
+
+const blob=new Blob(
+[JSON.stringify(backup,null,2)],
+{type:"application/json"}
+);
+
+const url=URL.createObjectURL(blob);
+
+const a=document.createElement("a");
+
+a.href=url;
+
+a.download="SMART_BUSINESS_BACKUP_"+today()+".json";
+
+document.body.appendChild(a);
+
+a.click();
+
+a.remove();
+
+URL.revokeObjectURL(url);
+
+showToast("ব্যাকআপ ডাউনলোড হয়েছে");
+
+}
+
+
+/* =====================================
+   BACKUP IMPORT
+===================================== */
+
+function importBackup(){
+
+const input=document.getElementById("backupFile");
+
+const file=input.files[0];
+
+if(!file){
+
+showToast("প্রথমে ব্যাকআপ ফাইল নির্বাচন করুন");
+
+return;
+
+}
+
+if(!confirm("বর্তমান তথ্যের জায়গায় ব্যাকআপের তথ্য বসবে। আপনি কি নিশ্চিত?")){
+
+return;
+
+}
+
+const reader=new FileReader();
+
+reader.onload=function(e){
+
+try{
+
+const data=JSON.parse(e.target.result);
+
+if(!data || !Array.isArray(data.fabricSales) || !Array.isArray(data.tailorOrders)){
+
+throw new Error("Invalid backup");
+
+}
+
+sales=data.fabricSales;
+
+orders=data.tailorOrders;
+
+notes=Array.isArray(data.customerNotes)?data.customerNotes:[];
+
+expenses=Array.isArray(data.shopExpenses)?data.shopExpenses:[];
+
+settings=data.smartBusinessSettings||{};
+
+orders.forEach(o=>{
+
+if(!Array.isArray(o.items)){
+
+o.items=[{
+
+product:o.product||"পুরোনো অর্ডার",
+
+quantity:Number(o.quantity)||1,
+
+price:Number(o.price)||0,
+
+total:Number(o.total)||0,
+
+measurements:o.measurements||""
+
+}];
+
+}
+
+});
+
+saveAll();
+
+renderAll();
+
+loadSettings();
+
+showToast("ব্যাকআপ সফলভাবে পুনরুদ্ধার হয়েছে");
+
+input.value="";
+
+}catch(err){
+
+showToast("ব্যাকআপ ফাইল সঠিক নয়");
+
+}
+
+};
+
+reader.readAsText(file);
+
+}
+
+
+/* =====================================
+   SEARCH EVENTS
+===================================== */
+
+document.getElementById("saleSearch").addEventListener("input",renderSales);
+
+document.getElementById("orderSearch").addEventListener("input",renderOrders);
+
+document.getElementById("accountExpenseSearch").addEventListener("input",renderExpenses);
+
+
+/* =====================================
+   RENDER EVERYTHING
+===================================== */
+
+function renderAll(){
+
+renderDashboard();
+
+renderSales();
+
+renderOrders();
+
+renderAccounts();
+
+renderExpenses();
+
+renderPaymentHistory();
+
+renderNotes();
+
+}
+
+
+/* =====================================
+   INITIALIZE APPLICATION
+===================================== */
+
+function initializeApp(){
+
+loadData();
+
+document.getElementById("saleDate").value=today();
+
+document.getElementById("orderDate").value=today();
+
+document.getElementById("orderDelivery").value=today();
+
+document.getElementById("accountExpenseDate").value=today();
+
+document.getElementById("paymentDate").value=today();
+
+addOrderItem();
+
+loadSettings();
+
+renderAll();
+
+}
+
+window.SBApp = {
+  setData(data){
+    sales = Array.isArray(data.sales) ? data.sales : [];
+    orders = Array.isArray(data.orders) ? data.orders : [];
+    notes = Array.isArray(data.notes) ? data.notes : [];
+    expenses = Array.isArray(data.expenses) ? data.expenses : [];
+    settings = data.settings && typeof data.settings === "object" ? data.settings : {};
+    initializeApp();
+  }
+};
+window.startSmartBusinessApp = function(){
+  // Firebase loads the signed-in user's cloud data before initializing the app.
+};
+
+</script>
+<script type="module" src="firebase.js"></script>
+
+</body>
+</html>
