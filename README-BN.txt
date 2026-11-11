@@ -1,17 +1,15 @@
-SMART BUSINESS - Cloud Sync Package
+SMART BUSINESS — Cloud Sync build
 
-ফাইল:
-1. index.html - মূল অ্যাপ
-2. firebase.js - লগইন ও Firestore Cloud Sync
-3. Firestore-Rules.txt - Firebase Firestore নিরাপত্তা নিয়ম
+Files to upload to the ROOT of the existing GitHub repository (replace same-name files):
+1. index.html
+2. firebase.js
+3. Firestore-Rules.txt (reference only; paste into Firebase Firestore Rules if rules differ)
 
-গুরুত্বপূর্ণ:
-- Firebase Authentication-এ Email/Password চালু থাকতে হবে।
-- Firestore Database তৈরি থাকতে হবে।
-- Firestore Rules ট্যাবে Firestore-Rules.txt-এর নিয়ম Publish করতে হবে।
-- অ্যাপটি শুধু index.html ফোনে খুললে সব ব্রাউজারে ES Module চলবে না। Firebase Hosting বা HTTPS ওয়েব হোস্টিংয়ে প্রকাশ করতে হবে।
-- একই Firebase অ্যাকাউন্টে লগইন করা একই দোকানের ডেটা একাধিক ডিভাইসে দেখা যাবে। আলাদা UID-এর ডেটা আলাদা থাকবে।
-- পুরোনো localStorage পরীক্ষামূলক ডেটা ক্লাউডে নেওয়া হবে না; নতুন ক্লাউড ডেটা ফাঁকা থেকে শুরু হবে।
-- একই সময়ে দুই ফোনে একই তথ্য সম্পাদনা করলে সর্বশেষ সংরক্ষিত পরিবর্তনটি থাকবে।
+Requirements already configured in Firebase: Email/Password sign-in, Firestore database, authorized domain atik-dev904.github.io.
 
-এটি প্রথম ক্লাউড-সিঙ্ক পরীক্ষামূলক প্যাকেজ। প্রকাশের আগে ওয়েব হোস্টিং ও বাস্তব ডিভাইসে পরীক্ষা করুন।
+Firestore path used: /users/{uid}/businessData/main
+Each account can read/write only its own user document tree under the supplied rules.
+
+IMPORTANT: This build intentionally does not import old browser localStorage test data into a new cloud account. Existing backups should be imported after login using Settings > Data Backup > Restore. Keep a backup JSON before replacing the live app.
+
+The app retains the existing fabric sales, multi-item tailoring orders and measurements, customer payments/due, expenses, payment history, customer notes, settings, backup/restore, and calculator. Calculator styling is refreshed.

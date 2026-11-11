@@ -5,8 +5,574 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>SMART BUSINESS</title>
 
-<link rel="stylesheet" href="style.css">
+<style>
+:root{
+--primary:#075b45;
+--primary2:#08785a;
+--bg:#f3f6f5;
+--card:#ffffff;
+--text:#172b25;
+--muted:#718078;
+--border:#e4ebe7;
+--green:#16a36a;
+--blue:#2878d8;
+--red:#dc4545;
+--orange:#e99a25;
+--shadow:0 5px 18px rgba(20,55,40,.08);
+}
+*{
+box-sizing:border-box;
+margin:0;
+padding:0;
+}
+
+body{
+font-family:Arial,"Noto Sans Bengali",sans-serif;
+background:var(--bg);
+color:var(--text);
+padding-bottom:85px;
+}
+
+button,input,select,textarea{
+font-family:inherit;
+}
+
+.app-header{
+background:linear-gradient(135deg,var(--primary),var(--primary2));
+color:white;
+padding:18px 16px;
+box-shadow:var(--shadow);
+}
+
+.header-top{
+display:flex;
+align-items:center;
+justify-content:space-between;
+}
+
+.brand{
+font-size:19px;
+font-weight:bold;
+letter-spacing:.5px;
+}
+
+.brand-sub{
+font-size:12px;
+opacity:.85;
+margin-top:4px;
+}
+
+.header-badge{
+background:rgba(255,255,255,.15);
+padding:7px 10px;
+border-radius:20px;
+font-size:11px;
+}
+
+.page{
+display:none;
+padding:15px;
+max-width:850px;
+margin:auto;
+}
+
+.page.active{
+display:block;
+}
+
+.page-title{
+font-size:20px;
+font-weight:bold;
+margin-bottom:15px;
+}
+
+.section-title{
+font-size:16px;
+font-weight:bold;
+margin:18px 0 12px;
+}
+
+.card{
+background:var(--card);
+border-radius:14px;
+padding:15px;
+margin-bottom:15px;
+box-shadow:var(--shadow);
+}
+
+.summary-grid{
+display:grid;
+grid-template-columns:repeat(2,1fr);
+gap:12px;
+margin-bottom:15px;
+}
+
+.summary-card{
+background:white;
+padding:15px;
+border-radius:13px;
+box-shadow:var(--shadow);
+border-left:4px solid var(--primary);
+}
+
+.summary-card.blue{
+border-left-color:var(--blue);
+}
+
+.summary-card.green{
+border-left-color:var(--green);
+}
+
+.summary-card.orange{
+border-left-color:var(--orange);
+}
+
+.summary-card.red{
+border-left-color:var(--red);
+}
+
+.summary-label{
+font-size:12px;
+color:var(--muted);
+margin-bottom:8px;
+}
+
+.summary-value{
+font-size:19px;
+font-weight:bold;
+overflow-wrap:anywhere;
+}
+
+.form-group{
+margin-bottom:13px;
+}
+
+.form-group label{
+display:block;
+font-size:13px;
+font-weight:bold;
+margin-bottom:6px;
+}
+
+.form-control{
+width:100%;
+padding:11px 12px;
+border:1px solid var(--border);
+border-radius:9px;
+outline:none;
+background:#fff;
+color:var(--text);
+font-size:14px;
+}
+
+.form-control:focus{
+border-color:var(--primary2);
+box-shadow:0 0 0 2px rgba(8,120,90,.08);
+}
+
+textarea.form-control{
+min-height:85px;
+resize:vertical;
+}
+
+.form-row{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:10px;
+}
+
+.btn{
+border:none;
+border-radius:9px;
+padding:11px 15px;
+font-size:13px;
+font-weight:bold;
+cursor:pointer;
+background:var(--primary);
+color:white;
+}
+
+.btn:active{
+transform:scale(.98);
+}
+
+.btn-full{
+width:100%;
+}
+
+.btn-green{
+background:var(--green);
+}
+
+.btn-blue{
+background:var(--blue);
+}
+
+.btn-red{
+background:var(--red);
+}
+
+.btn-orange{
+background:var(--orange);
+}
+
+.btn-light{
+background:#eaf3ef;
+color:var(--primary);
+}
+
+.record-card{
+background:white;
+padding:14px;
+border-radius:12px;
+margin-bottom:11px;
+box-shadow:var(--shadow);
+}
+
+.record-header{
+display:flex;
+justify-content:space-between;
+align-items:flex-start;
+gap:10px;
+margin-bottom:9px;
+}
+
+.record-title{
+font-weight:bold;
+font-size:15px;
+}
+
+.record-sub{
+font-size:12px;
+color:var(--muted);
+margin-top:5px;
+line-height:1.6;
+}
+
+.record-amount{
+font-weight:bold;
+color:var(--primary);
+white-space:nowrap;
+}
+
+.record-actions{
+display:flex;
+flex-wrap:wrap;
+gap:7px;
+margin-top:12px;
+}
+
+.record-actions button{
+padding:8px 10px;
+font-size:11px;
+}
+
+.badge{
+display:inline-block;
+padding:5px 9px;
+border-radius:20px;
+font-size:11px;
+font-weight:bold;
+background:#e8f5ee;
+color:var(--green);
+}
+
+.badge.pending{
+background:#fff3df;
+color:#b77913;
+}
+
+.badge.cancelled{
+background:#ffe9e9;
+color:var(--red);
+}
+
+.badge.due{
+background:#fff3df;
+color:#b77913;
+}
+
+.empty-state{
+text-align:center;
+padding:25px 10px;
+color:var(--muted);
+font-size:13px;
+}
+
+.search-box{
+margin-bottom:13px;
+}
+
+.divider{
+height:1px;
+background:var(--border);
+margin:15px 0;
+}
+
+.small-text{
+font-size:12px;
+color:var(--muted);
+line-height:1.6;
+}
+
+.text-green{
+color:var(--green);
+}
+
+.text-red{
+color:var(--red);
+}
+
+.text-blue{
+color:var(--blue);
+}
+
+.text-orange{
+color:var(--orange);
+}
+
+.info-row{
+display:flex;
+justify-content:space-between;
+gap:10px;
+padding:9px 0;
+border-bottom:1px solid var(--border);
+font-size:13px;
+}
+
+.info-row:last-child{
+border-bottom:none;
+}
+
+.info-row strong{
+text-align:right;
+overflow-wrap:anywhere;
+}
+
+.bottom-nav{
+position:fixed;
+bottom:0;
+left:0;
+right:0;
+z-index:100;
+background:white;
+display:flex;
+justify-content:space-around;
+padding:8px 3px;
+box-shadow:0 -4px 15px rgba(0,0,0,.08);
+}
+
+.nav-btn{
+border:none;
+background:transparent;
+color:var(--muted);
+font-size:10px;
+display:flex;
+flex-direction:column;
+align-items:center;
+gap:4px;
+padding:5px 3px;
+flex:1;
+cursor:pointer;
+}
+
+.nav-icon{
+font-size:19px;
+}
+
+.nav-btn.active{
+color:var(--primary);
+font-weight:bold;
+}
+
+.modal{
+display:none;
+position:fixed;
+inset:0;
+z-index:200;
+background:rgba(0,0,0,.5);
+padding:18px;
+overflow-y:auto;
+}
+
+.modal.show{
+display:flex;
+align-items:center;
+justify-content:center;
+}
+
+.modal-box{
+width:100%;
+max-width:500px;
+background:white;
+border-radius:15px;
+padding:18px;
+max-height:90vh;
+overflow-y:auto;
+}
+
+.modal-title{
+font-size:17px;
+font-weight:bold;
+margin-bottom:15px;
+}
+
+.modal-close{
+float:right;
+border:none;
+background:#f2f2f2;
+padding:6px 10px;
+border-radius:7px;
+cursor:pointer;
+}
+
+.toast{
+position:fixed;
+bottom:90px;
+left:50%;
+transform:translateX(-50%);
+background:#172b25;
+color:white;
+padding:11px 17px;
+border-radius:8px;
+font-size:13px;
+z-index:500;
+display:none;
+max-width:90%;
+text-align:center;
+}
+
+.toast.show{
+display:block;
+}
+
+.calculator{
+background:#172b25;
+padding:15px;
+border-radius:14px;
+}
+
+.calc-display{
+width:100%;
+padding:18px 12px;
+background:#263d34;
+color:white;
+border:none;
+border-radius:9px;
+font-size:25px;
+text-align:right;
+margin-bottom:12px;
+}
+
+.calc-grid{
+display:grid;
+grid-template-columns:repeat(4,1fr);
+gap:8px;
+}
+
+.calc-grid button{
+padding:17px 5px;
+border:none;
+border-radius:8px;
+font-size:17px;
+font-weight:bold;
+background:#eaf3ef;
+color:var(--text);
+cursor:pointer;
+}
+
+.calc-grid button.operator{
+background:#d7eee4;
+color:var(--primary);
+}
+
+.calc-grid button.equal{
+background:var(--green);
+color:white;
+}
+
+.calc-grid button.clear{
+background:#ffe2e2;
+color:var(--red);
+}
+
+.order-item{
+background:#f8fbf9;
+border:1px solid var(--border);
+border-radius:11px;
+padding:13px;
+margin-bottom:12px;
+}
+
+.order-item-header{
+display:flex;
+justify-content:space-between;
+align-items:center;
+margin-bottom:12px;
+}
+
+.order-item-title{
+font-size:14px;
+font-weight:bold;
+color:var(--primary);
+}
+
+.item-subtotal{
+font-weight:bold;
+color:var(--primary);
+font-size:15px;
+}
+
+.order-total-box{
+background:#eaf5ef;
+border-radius:10px;
+padding:14px;
+display:flex;
+justify-content:space-between;
+align-items:center;
+margin:14px 0;
+font-weight:bold;
+}
+
+.order-number{
+display:inline-block;
+background:#e7f1ff;
+color:#1765b5;
+padding:5px 9px;
+border-radius:6px;
+font-size:12px;
+font-weight:bold;
+margin-bottom:7px;
+}
+
+@media(max-width:380px){
+.summary-value{
+font-size:16px;
+}
+.form-row{
+gap:7px;
+}
+.nav-btn{
+font-size:9px;
+}
+.nav-icon{
+font-size:17px;
+}
+}
+
+/* SMART BUSINESS modern calculator refresh */
+.calculator{background:linear-gradient(145deg,#102f26,#1d493b);padding:18px;border-radius:22px;box-shadow:0 14px 30px rgba(7,91,69,.18);border:1px solid rgba(255,255,255,.08)}
+.calc-display{min-height:76px;padding:18px 15px;background:#09251d;color:#f3fff8;border:1px solid rgba(255,255,255,.1);border-radius:15px;font-size:30px;font-weight:700;letter-spacing:.5px;box-shadow:inset 0 3px 10px rgba(0,0,0,.2)}
+.calc-grid{gap:10px}
+.calc-grid button{min-height:58px;padding:12px 5px;border:1px solid rgba(7,91,69,.06);border-radius:16px;font-size:20px;background:#f4faf6;color:#17382d;box-shadow:0 4px 0 rgba(0,0,0,.09);transition:transform .08s,filter .08s}
+.calc-grid button:active{transform:translateY(2px);box-shadow:0 2px 0 rgba(0,0,0,.08);filter:brightness(.96)}
+.calc-grid button.operator{background:#c9f0dc;color:#075b45;font-size:23px}
+.calc-grid button.clear{background:#ffe5e5;color:#c52d38}
+.calc-grid button.equal{background:linear-gradient(145deg,#19b978,#078653);color:#fff;font-size:25px;box-shadow:0 4px 0 #056b43}
+@media(max-width:380px){.calc-grid{gap:7px}.calc-grid button{min-height:52px;font-size:18px}.calculator{padding:13px}}
+</style>
 </head>
+
 <body>
 
 <header class="app-header">
@@ -662,46 +1228,34 @@ let settings = {};
 let nextOrderNumber = 1;
 
 function loadData(){
-// New account starts clean. Old device test records are deliberately not imported.
-sales = [];
-orders = [];
-notes = [];
-expenses = [];
-settings = {};
-
-orders.forEach(o=>{
-
-if(!o.items || !Array.isArray(o.items)){
-
-o.items = [{
-product:o.product || "পুরোনো অর্ডার",
-quantity:Number(o.quantity) || 1,
-price:Number(o.price) || Number(o.total) || 0,
-total:Number(o.total) || 0,
-measurements:typeof o.measurements === "string"
-? o.measurements
-: JSON.stringify(o.measurements || {})
-}];
-
+// Cloud account data is loaded by firebase.js before the app starts.
+// Local test data is deliberately not imported into a new cloud account.
 }
 
-if(!o.orderNumber){
-o.orderNumber = "";
+function applyCloudData(data){
+  sales = Array.isArray(data.sales) ? data.sales : [];
+  orders = Array.isArray(data.orders) ? data.orders : [];
+  notes = Array.isArray(data.notes) ? data.notes : [];
+  expenses = Array.isArray(data.expenses) ? data.expenses : [];
+  settings = data.settings && typeof data.settings === "object" ? data.settings : {};
+  orders.forEach(o=>{
+    if(!Array.isArray(o.items)){
+      o.items=[{product:o.product||"পুরোনো অর্ডার",quantity:Number(o.quantity)||1,price:Number(o.price)||Number(o.total)||0,total:Number(o.total)||0,measurements:typeof o.measurements === "string" ? o.measurements : JSON.stringify(o.measurements||{})}];
+    }
+    if(!o.orderNumber)o.orderNumber="";
+    if(!Array.isArray(o.payments))o.payments=[];
+    if(!o.status)o.status="চলমান";
+  });
+  localStorage.setItem("fabricSales",JSON.stringify(sales));
+  localStorage.setItem("tailorOrders",JSON.stringify(orders));
+  localStorage.setItem("customerNotes",JSON.stringify(notes));
+  localStorage.setItem("shopExpenses",JSON.stringify(expenses));
+  localStorage.setItem("smartBusinessSettings",JSON.stringify(settings));
+  if(typeof renderAll === "function"){renderAll(); if(typeof loadSettings === "function")loadSettings();}
 }
 
-if(!Array.isArray(o.payments)){
-o.payments = [];
-}
-
-if(!o.status){
-o.status = "চলমান";
-}
-
-});
-
-saveAll();
-
-}
+window.SBApplyCloudData = applyCloudData;
+window.SBGetCloudData = () => ({sales,orders,notes,expenses,settings});
 
 function saveAll(){
 
@@ -710,7 +1264,10 @@ localStorage.setItem("tailorOrders",JSON.stringify(orders));
 localStorage.setItem("customerNotes",JSON.stringify(notes));
 localStorage.setItem("shopExpenses",JSON.stringify(expenses));
 localStorage.setItem("smartBusinessSettings",JSON.stringify(settings));
-if(window.SBCloudSave) window.SBCloudSave({sales,orders,notes,expenses,settings});
+
+if(typeof window.SBCloudSave === "function"){
+  window.SBCloudSave({sales,orders,notes,expenses,settings});
+}
 
 }
 
@@ -2381,8 +2938,6 @@ renderNotes();
 
 function initializeApp(){
 
-loadData();
-
 document.getElementById("saleDate").value=today();
 
 document.getElementById("orderDate").value=today();
@@ -2401,22 +2956,9 @@ renderAll();
 
 }
 
-window.SBApp = {
-  setData(data){
-    sales = Array.isArray(data.sales) ? data.sales : [];
-    orders = Array.isArray(data.orders) ? data.orders : [];
-    notes = Array.isArray(data.notes) ? data.notes : [];
-    expenses = Array.isArray(data.expenses) ? data.expenses : [];
-    settings = data.settings && typeof data.settings === "object" ? data.settings : {};
-    initializeApp();
-  }
-};
-window.startSmartBusinessApp = function(){
-  // Firebase loads the signed-in user's cloud data before initializing the app.
-};
+window.startSmartBusinessApp = initializeApp;
 
 </script>
-<script type="module" src="firebase.js"></script>
 
 </body>
 </html>
