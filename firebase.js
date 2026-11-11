@@ -1,4 +1,4 @@
-/* SMART BUSINESS — Firebase Authentication + Firestore Cloud Sync */
+/* SMART TAILORS — Firebase Authentication + Firestore Cloud Sync */
 import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js';
 import {
   getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword,
@@ -43,7 +43,7 @@ const gate = document.createElement('div');
 gate.id = 'sbAuthGate';
 gate.innerHTML = `
  <div class="auth-card">
-  <h2>SMART BUSINESS</h2>
+  <h2>SMART TAILORS</h2>
   <div class="auth-sub">আপনার ব্যবসার অ্যাকাউন্টে প্রবেশ করুন</div>
   <form id="sbLoginForm">
    <label>ইমেইল</label><input id="sbLoginEmail" type="email" autocomplete="username" required placeholder="আপনার ইমেইল">
@@ -168,7 +168,7 @@ window.SBCloudSave = data => {
       window.SBCloudStatus='সিঙ্ক সম্পন্ন';
     }catch(err){
       window.SBCloudStatus='সিঙ্ক সমস্যা';
-      console.error('SMART BUSINESS cloud save:',err);
+      console.error('SMART TAILORS cloud save:',err);
       if(typeof window.showToast==='function') window.showToast('ক্লাউডে সংরক্ষণ হয়নি: '+(err.code||err.message));
     }
   },450);

@@ -1,4 +1,4 @@
-SMART BUSINESS — Cloud Sync build
+SMART TAILORS — Cloud Sync build
 
 Files to upload to the ROOT of the existing GitHub repository (replace same-name files):
 1. index.html

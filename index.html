@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>SMART BUSINESS</title>
+<title>SMART TAILORS</title>
 
 <style>
 :root{
@@ -560,7 +560,7 @@ font-size:17px;
 }
 }
 
-/* SMART BUSINESS modern calculator refresh */
+/* SMART TAILORS modern calculator refresh */
 .calculator{background:linear-gradient(145deg,#102f26,#1d493b);padding:18px;border-radius:22px;box-shadow:0 14px 30px rgba(7,91,69,.18);border:1px solid rgba(255,255,255,.08)}
 .calc-display{min-height:76px;padding:18px 15px;background:#09251d;color:#f3fff8;border:1px solid rgba(255,255,255,.1);border-radius:15px;font-size:30px;font-weight:700;letter-spacing:.5px;box-shadow:inset 0 3px 10px rgba(0,0,0,.2)}
 .calc-grid{gap:10px}
@@ -578,14 +578,14 @@ font-size:17px;
 <header class="app-header">
 <div class="header-top">
 <div>
-<div class="brand">SMART BUSINESS</div>
+<div class="brand">SMART TAILORS</div>
 <div class="brand-sub">Men's Fabrics & Tailors Management System</div>
 </div>
 <div class="header-badge">Version 3.2</div>
 </div>
 </header>
 
-<!-- DASHBOARD PAGE -->
+<<!-- DASHBOARD PAGE -->
 <section class="page active" id="dashboardPage">
 
 <div class="page-title">📊 ড্যাশবোর্ড</div>
@@ -640,7 +640,7 @@ font-size:17px;
 </div>
 
 <div class="card">
-<div class="section-title">💡 SMART BUSINESS</div>
+<div class="section-title">💡 SMART TAILORS</div>
 <p class="small-text">
 আপনার কাপড় বিক্রি, সেলাইয়ের অর্ডার, কাস্টমারের জমা-বকেয়া এবং দোকানের খরচ—সবকিছু এক জায়গায় পরিচালনা করুন।
 </p>
@@ -1055,7 +1055,7 @@ onclick="importBackup()">
 
 <div class="info-row">
 <span>সফটওয়্যার</span>
-<strong>SMART BUSINESS</strong>
+<strong>SMART TAILORS</strong>
 </div>
 
 <div class="info-row">
@@ -1212,7 +1212,7 @@ onclick="closeModal('detailsModal')">
 <script>
 
 /* =====================================
-   SMART BUSINESS VERSION 3.2
+   SMART TAILORS VERSION 3.2
    MAIN JAVASCRIPT
 ===================================== */
 
@@ -2683,6 +2683,8 @@ address:document.getElementById("settingAddress").value.trim()
 
 saveAll();
 
+loadSettings();
+
 showToast("সেটিংস সংরক্ষণ হয়েছে");
 
 });
@@ -2761,7 +2763,7 @@ function exportBackup(){
 
 const backup={
 
-app:"SMART BUSINESS",
+app:"SMART TAILORS",
 
 version:"3.2",
 
@@ -2790,7 +2792,7 @@ const a=document.createElement("a");
 
 a.href=url;
 
-a.download="SMART_BUSINESS_BACKUP_"+today()+".json";
+a.download="SMART_TAILORS_BACKUP_"+today()+".json";
 
 document.body.appendChild(a);
 
