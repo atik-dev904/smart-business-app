@@ -9,7 +9,7 @@ import {
 } from 'https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js';
 
 const firebaseConfig = {
-  apiKey: 'AIzaSyDv4Avso4nJW_Ld0sCZGXgbq1uBOKLlCqE',
+  apiKey: 'AIzaSyA7aL4RPZN5aaGTRyAJExYig4w5Dds61QI',
   authDomain: 'smart-business-142fb.firebaseapp.com',
   projectId: 'smart-business-142fb',
   storageBucket: 'smart-business-142fb.firebasestorage.app',
