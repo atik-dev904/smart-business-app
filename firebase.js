@@ -46,7 +46,7 @@ gate.innerHTML = `
   <h2>SMART TAILORS</h2>
   <div class="auth-sub">মোবাইল নম্বর ও পাসওয়ার্ড দিয়ে প্রবেশ করুন</div>
   <form id="sbLoginForm">
-   <label>মোবাইল নম্বর</label><input id="sbLoginPhone" type="tel" autocomplete="username" required placeholder="01XXXXXXXXX 
+   <label>মোবাইল নম্বর</label><input id="sbLoginPhone" type="tel" autocomplete="username" required placeholder="01XXXXXXXXX"> 
    <label>পাসওয়ার্ড</label><input id="sbLoginPassword" type="password" autocomplete="current-password" required minlength="6" placeholder="কমপক্ষে ৬ অক্ষর">
    <button type="submit">লগইন</button>
    <button type="button" class="auth-switch" id="sbShowRegister">নতুন অ্যাকাউন্ট খুলুন</button>
@@ -61,7 +61,7 @@ gate.innerHTML = `
    <button type="button" class="auth-switch" id="sbShowLogin">আগে অ্যাকাউন্ট আছে? লগইন</button>
   </form>
   <div class="auth-error" id="sbAuthError" role="alert"></div>
-  <div class="auth-note">OTP ছাড়াই মোবাইল নম্বর ও পাসওয়ার্ড দিয়ে অ্যাকাউন্ট ব্যবহার করুন। পাসওয়ার্ড কারও সঙ্গে শেয়ার করবেন না।</div>
+  <div class="auth-note">পাসওয়ার্ড কারও সঙ্গে শেয়ার করবেন না।</div>
  </div>`;
 document.body.appendChild(gate);
 
