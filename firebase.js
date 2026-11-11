@@ -46,7 +46,7 @@ gate.innerHTML = `
   <h2>SMART TAILORS</h2>
   <div class="auth-sub">মোবাইল নম্বর ও পাসওয়ার্ড দিয়ে প্রবেশ করুন</div>
   <form id="sbLoginForm">
-   <label>মোবাইল নম্বর</label><input id="sbLoginPhone" type="tel" autocomplete="username" required placeholder="01XXXXXXXXX (পুরোনো ইমেইলও চলবে)">
+   <label>মোবাইল নম্বর</label><input id="sbLoginPhone" type="tel" autocomplete="username" required placeholder="01XXXXXXXXX >
    <label>পাসওয়ার্ড</label><input id="sbLoginPassword" type="password" autocomplete="current-password" required minlength="6" placeholder="কমপক্ষে ৬ অক্ষর">
    <button type="submit">লগইন</button>
    <button type="button" class="auth-switch" id="sbShowRegister">নতুন অ্যাকাউন্ট খুলুন</button>
