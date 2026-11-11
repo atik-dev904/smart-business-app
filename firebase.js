@@ -64,7 +64,9 @@ const $ = id => document.getElementById(id);
 const errorBox = $('sbAuthError');
 function showError(message=''){ errorBox.textContent = message; }
 function friendlyError(error){
- const code = error?.code || '';
+ const code = error?.code || 'unknown';
+ const message = error?.message || 'অজানা সমস্যা';
+
  const map = {
   'auth/email-already-in-use':'এই ইমেইল দিয়ে আগে থেকেই অ্যাকাউন্ট খোলা আছে।',
   'auth/invalid-email':'সঠিক ইমেইল ঠিকানা লিখুন।',
@@ -72,9 +74,11 @@ function friendlyError(error){
   'auth/invalid-credential':'ইমেইল অথবা পাসওয়ার্ড সঠিক নয়।',
   'auth/user-not-found':'এই ইমেইলে কোনো অ্যাকাউন্ট পাওয়া যায়নি।',
   'auth/wrong-password':'পাসওয়ার্ড সঠিক নয়।',
-  'auth/network-request-failed':'ইন্টারনেট সংযোগ পরীক্ষা করে আবার চেষ্টা করুন.'
+  'auth/network-request-failed':'ইন্টারনেট সংযোগ পরীক্ষা করুন।',
+  'auth/operation-not-allowed':'Firebase-এ Email/Password চালু নেই।'
  };
- return map[code] || 'কাজটি সম্পন্ন হয়নি। ইন্টারনেট সংযোগ পরীক্ষা করে আবার চেষ্টা করুন।';
+
+ return (map[code] || 'সমস্যার বিস্তারিত: ' + message) + ' [Error: ' + code + ']';
 }
 $('sbShowRegister').onclick=()=>{ $('sbLoginForm').classList.add('hidden'); $('sbRegisterForm').classList.remove('hidden'); showError(); };
 $('sbShowLogin').onclick=()=>{ $('sbRegisterForm').classList.add('hidden'); $('sbLoginForm').classList.remove('hidden'); showError(); };
